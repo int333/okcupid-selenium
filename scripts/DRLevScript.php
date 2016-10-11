@@ -43,6 +43,23 @@ abstract class DRLevScript {
      * @throws NoSuchElementException
      */
     protected function clickElement($selector, $tryIterations = 1) {
+        if (is_array($selector)) {
+            $err = null;
+            foreach ($selector as $i => $try) {
+                try {
+                    $this->clickElement($try, $tryIterations);
+                    return $i;
+                } catch (NoSuchElementException $e) {
+                    $err = $e;
+                    continue;
+                }
+            }
+            if ($err) {
+                throw $err;
+            } else {
+                return;
+            }
+        }
         $by = $this->getByFromSelector($selector);
         while($tryIterations-- > 0 ) {
             $done = false;
@@ -60,7 +77,6 @@ abstract class DRLevScript {
             }
         }
         $this->driver->findElement($by)->click();
-        return true;
     }
 
     /**
