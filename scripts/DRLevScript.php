@@ -48,7 +48,7 @@ abstract class DRLevScript {
             $err = null;
             foreach ($selector as $i => $try) {
                 try {
-                    $this->clickElement($try, $tryIterations);
+                    $this->clickElement($try, $tryIterations, $throw);
                     return $i;
                 } catch (NoSuchElementException $e) {
                     $err = $e;
@@ -73,7 +73,7 @@ abstract class DRLevScript {
                 $lastErr = $e;
             }
 
-            if (!$done && $lastErr) {
+            if (!$done && $lastErr && $throw) {
                 throw $lastErr;
             }
         }
