@@ -56,7 +56,11 @@ abstract class DRLevScript {
                 }
             }
             if ($err && $throw) {
-                throw $err;
+                if ($throw) {
+                    throw $err;
+                } else {
+                    return false;
+                }
             } else {
                 return;
             }
@@ -73,8 +77,12 @@ abstract class DRLevScript {
                 $lastErr = $e;
             }
 
-            if (!$done && $lastErr && $throw) {
-                throw $lastErr;
+            if (!$done && $lastErr) {
+                if ($throw) {
+                    throw $lastErr;
+                } else {
+                    return false;
+                }
             }
         }
         $this->driver->findElement($by)->click();
