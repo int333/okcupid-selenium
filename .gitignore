@@ -1,0 +1,10 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea/
+composer.lock
+phpunit.bat
+phpunit/
+selenium-server-standalone-2.53.1.jar
+Would skip repository vendor/facebook/webdriver
+vendor/
+chromedriver.exe
+config.local.txt

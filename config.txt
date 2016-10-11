@@ -1,0 +1,12 @@
+url=https://www.okcupid.com
+rucaptcha-api-key=5594ae49f2f8d33f8df5ae210d258012
+email-domain=@polyfaust.com|@cartelera.org|@hostcalls.com
+step-timeout=2000
+repeat-count=1
+profile-zipcodes=/home/drlev/myprojects/okcupid-data/зип код.txt
+profile-nicks=/home/drlev/myprojects/okcupid-data/ники.txt
+profile-text=/home/drlev/myprojects/okcupid-data/текст.txt
+profile-photos=/home/drlev/myprojects/okcupid-data/photos/
+profile-result=/home/drlev/myprojects/okcupid-data/Результаты.txt
+like-pages-count=10
+like-per-page-count=10
