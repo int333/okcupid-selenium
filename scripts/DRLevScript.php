@@ -42,7 +42,7 @@ abstract class DRLevScript {
      * @return bool
      * @throws NoSuchElementException
      */
-    protected function clickElement($selector, $tryIterations = 1) {
+    protected function clickElement($selector, $tryIterations = 1, $throw = false) {
         if (is_array($selector)) {
             $err = null;
             foreach ($selector as $i => $try) {
@@ -54,7 +54,7 @@ abstract class DRLevScript {
                     continue;
                 }
             }
-            if ($err) {
+            if ($err && $throw) {
                 throw $err;
             } else {
                 return;
