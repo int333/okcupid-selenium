@@ -5,7 +5,7 @@ class DRLevSetLike extends DRLevScript {
         $this->driver->get($this->data['approve-url']);
         $this->driver->get(DRLevConfig::get('url').'/profile');
         console("set search filter...");
-        $this->clickElement("#what_i_want_react");
+        $this->clickElement(array("#react-profile-wiw-wrapper", "#what_i_want_react"));
         $ch = $this->driver->findElement($this->getByFromSelector("xpath=//fieldset[@class='wiw-form-nearme']//input"));
         if ($ch->getAttribute('checked') == 'true') {
             $this->clickElement("xpath=//fieldset[@class='wiw-form-nearme']//span[@class='oknf-switch-decoration']");
