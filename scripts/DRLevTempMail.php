@@ -20,7 +20,7 @@ class DRLevTempMail extends DRLevScript {
                 $data = json_decode(file_get_contents("http://api.temp-mail.ru/request/mail/id/{$md5}/format/json"), true);
                 console("OK\n");
             } catch (Exception $e) {
-                console("ERROR\n");
+                console("NOT READY\n");
                 usleep($this->iterationWait * 1000000);
                 continue;
             }
@@ -32,8 +32,16 @@ class DRLevTempMail extends DRLevScript {
                 }
             } else {
                 $mailData = $data[0]['mail_text'];
-                $part = substr($mailData, strpos($mailData, 'Sign In') + 7);
-                $approveUrl = (trim(substr($part, 0, strpos($part, '-------'))));
+                if (strpos($mailData, 'Sign In') !== false) {
+                    $part = substr($mailData, strpos($mailData, 'Sign In') + 7);
+                    $approveUrl = (trim(substr($part, 0, strpos($part, '-------'))));
+                } else {
+                    $mailData = $data[0]['mail_text_only'];
+                    $marker = '<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"';
+                    $part = substr($mailData, strpos($mailData, $marker) + strlen($marker));
+                    $approveUrl = (trim(substr($part, 0, strpos($part, 'style') - 2)));
+                    $approveUrl = substr($approveUrl, 6);
+                }
                 $this->data['approve-url'] = $approveUrl;
                 console("approve url - {$approveUrl}\n");
                 break;

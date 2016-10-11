@@ -107,7 +107,7 @@ class DRLevDataMgr {
     }
 
     public function setResult($data, $errorMessage = '') {
-        $string = "{$data['nick']}|{$data['[password']}|{$data['email']}\n";
+        $string = "{$data['nick']}|{$data['password']}|{$data['email']}\n";
         file_put_contents(DRLevConfig::get('profile-result'), $string, FILE_APPEND);
         if ($errorMessage) {
             file_put_contents('./log/error.txt', $errorMessage, FILE_APPEND);
