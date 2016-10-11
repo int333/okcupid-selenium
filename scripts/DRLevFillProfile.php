@@ -15,7 +15,7 @@ class DRLevFillProfile extends DRLevScript {
         $this->clickElement("xpath=//div[@id='okphotos_finished']//a[@id='done_uploading']");
         console("OK\n");
 
-        $this->clickElement("xpath=//div[@id='windowshade']", 1, true);   
+        $this->clickElement("xpath=//div[@id='windowshade']", 1, false);
         
         console("set text...");
         $this->fillElement("xpath=//div[@id='react-profile-essays']//form//textarea[@name='essay']", $this->data['text']);

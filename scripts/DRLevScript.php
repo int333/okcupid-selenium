@@ -39,10 +39,11 @@ abstract class DRLevScript {
     /**
      * @param $selector
      * @param int $tryIterations
-     * @return bool
+     * @param bool $throw
+     * @return int|string
      * @throws NoSuchElementException
      */
-    protected function clickElement($selector, $tryIterations = 1, $throw = false) {
+    protected function clickElement($selector, $tryIterations = 1, $throw = true) {
         if (is_array($selector)) {
             $err = null;
             foreach ($selector as $i => $try) {
