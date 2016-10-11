@@ -10,12 +10,13 @@ class DRLevFillProfile extends DRLevScript {
         console("set photo...");
         $this->clickElement(array("xpath=//div[contains(@class, 'userinfo2015-thumb-upload-content')]", "xpath=//div[@id='profile_thumbs']//button")) ;
         $fileInput = $this->driver->findElement($this->getByFromSelector("xpath=//input[@id='okphotos_file_input']"));
-        $fileInput->sendKeys($this->data['photo']);
-        $this->clickElement("xpath=//div[@id='windowshade']", 1, true);    
+        $fileInput->sendKeys($this->data['photo']); 
         $this->clickElement("xpath=//div[@id='okphotos_edit']//a[@id='okphotos_edit_next']");
         $this->clickElement("xpath=//div[@id='okphotos_finished']//a[@id='done_uploading']");
         console("OK\n");
 
+        $this->clickElement("xpath=//div[@id='windowshade']", 1, true);   
+        
         console("set text...");
         $this->fillElement("xpath=//div[@id='react-profile-essays']//form//textarea[@name='essay']", $this->data['text']);
         stepSleep();
