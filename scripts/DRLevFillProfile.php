@@ -8,7 +8,7 @@ class DRLevFillProfile extends DRLevScript {
         $this->driver->get($this->data['approve-url']);
         $this->driver->get(DRLevConfig::get('url').'/profile');
         console("set photo...");
-        $this->clickElement(array("xpath=//div[@id='profile_thumbs']//button", "xpath=//div[contains(@class, 'userinfo2015-thumb-upload-content')]")) ;
+        $this->clickElement(array("xpath=//div[contains(@class, 'userinfo2015-thumb-upload-content')]", "xpath=//div[@id='profile_thumbs']//button")) ;
         $fileInput = $this->driver->findElement($this->getByFromSelector("xpath=//input[@id='okphotos_file_input']"));
         $fileInput->sendKeys($this->data['photo']);
         $this->clickElement("xpath=//div[@id='okphotos_edit']//a[@id='okphotos_edit_next']");
