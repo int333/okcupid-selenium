@@ -20,7 +20,6 @@ class DRLevTempMail extends DRLevScript {
                 console('.');
                 $data = json_decode(file_get_contents("http://api.temp-mail.ru/request/mail/id/{$md5}/format/json"), true);
             } catch (Exception $e) {
-                console("NOT READY\n");
                 usleep($this->iterationWait * 1000000);
                 continue;
             }
