@@ -88,7 +88,7 @@ class DRLevRegistration extends DRLevScript {
         sleep(2);
         stepSleep();
         console("3 likes...");
-        $this->driver->executeScript("jQuery('div.oblikes-match:lt(3)').find('button').click(); jQuery('div.user_card:lt(3)').find('a.rate_btn.flatbutton.silver').click()");
+        $this->driver->executeScript("jQuery('div.oblikes-match:lt(3)').find('button').click(); jQuery('div.user_card:lt(3)').find('a.rate_btn.flatbutton.silver').each(function(i, e){var el = e, clickFn = function(){el.click()}; setTimeout(clickFn, 1000 * i)});");
         console("OK\n");
         sleep(2);
     }
