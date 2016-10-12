@@ -6,6 +6,7 @@ repeat-count=1
 profile-zipcodes=/home/drlev/myprojects/okcupid-data/зип код.txt
 profile-nicks=/home/drlev/myprojects/okcupid-data/ники.txt
 profile-text=/home/drlev/myprojects/okcupid-data/текст.txt
+profile-link=/home/drlev/myprojects/okcupid-data/links.txt
 profile-photos=/home/drlev/myprojects/okcupid-data/photos/
 profile-result=/home/drlev/myprojects/okcupid-data/Результаты.txt
 like-pages-count=10

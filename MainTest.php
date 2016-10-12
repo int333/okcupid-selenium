@@ -37,15 +37,16 @@ class MainTest extends DRLevTest {
         console("--CHECK EMAIL--\n");
         $script = new DRLevTempMail($this->driver, $this->data);
         $script->start();
+        $this->driver->get($this->data['approve-url']);
 
 //        $this->data['approve-url'] = "https://www.okcupid.com/l/.595de9AxiVga.4Fi9ob21lP2NmPXdlbGNvbWVfZW1haWwAADKTAJMuXZrCV_1CiQAk6g.5CmF8qV9AGymK6GvlSGsI1Ag@@uDM=";
-        console("--FILL PROFILE--\n");
-        $script = new DRLevFillProfile($this->driver, $this->data);
-        $script->start();
+//        console("--FILL PROFILE--\n");
+//        $script = new DRLevFillProfile($this->driver, $this->data);
+//        $script->start();
 
-        console("--SET LIKES--\n");
-        $script = new DRLevSetLike($this->driver, $this->data);
-        $script->start();
+//        console("--SET LIKES--\n");
+//        $script = new DRLevSetLike($this->driver, $this->data);
+//        $script->start();
 //
 //        $script = new DRLevLogin($this->driver, $this->data);
 //        $script->start();

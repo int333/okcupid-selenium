@@ -9,7 +9,8 @@ class DRLevDataMgr {
     protected $zipCodes = array();
     protected $nicks = array();
     protected $photos = array();
-    protected $text = '';
+    protected $texts = array();
+    protected $links = array();
     protected $newNickIndex = 0;
     protected static $instance;
     public static function getInstance() {
@@ -45,7 +46,31 @@ class DRLevDataMgr {
         if (count($this->nicks) == 0)  {
             throw new Exception('Nicks does not exists');
         }
-        $this->text = file_get_contents(DRLevConfig::get('profile-text'));
+        $texts = DRLevConfig::get('profile-text');
+        if (file_exists($texts)) {
+            $texts = file($texts);
+            $oneText = '';
+            foreach ($texts as $text) {
+                $text = trim($text);
+                if (empty($text)) {
+                    $this->texts[] = $oneText;
+                    $oneText = '';
+                } else {
+                    $oneText.= empty($oneText) ? '' : "\n";
+                    $oneText.= $text;
+                }
+            }
+        }
+        $links = DRLevConfig::get('profile-link');
+        if (file_exists($links)) {
+            $links = file($links);
+            foreach ($links as $link) {
+                $link = trim($link);
+                if (!empty($link)) {
+                    $this->links[] = $link;
+                }
+            }
+        }
         $photosDir = DRLevConfig::get('profile-photos');
         if (is_dir($photosDir)) {
             $photos = scandir($photosDir);
@@ -69,7 +94,7 @@ class DRLevDataMgr {
             'nick' => $this->generateNick(),
             'country' => 'United States',
             'zipcode' => $this->zipCodes[rand(0, count($this->zipCodes) - 1)],
-            'text' => $this->text,
+            'text' => $this->texts[rand(0, count($this->texts) - 1)]."\n".$this->links[rand(0, count($this->links) - 1)],
             'photo' => $this->photos[rand(0, count($this->photos) - 1)]
         );
 

@@ -20,6 +20,7 @@ class DRLevRegistration extends DRLevScript {
         $captcha = new DRLevRuCaptcha($this->driver, $this->data);
         $captcha->start();
         $this->clickElement("xpath=//div[@id='signup_captcha']/following-sibling::*[contains(text(), 'Done!')]");
+        $this->fill3Steps();
     }
 
     protected function fillForm() {
@@ -48,6 +49,48 @@ class DRLevRegistration extends DRLevScript {
             usleep(250000);
         }
         $this->fillElement('#password_input', $login.'1');
+    }
+
+    protected function fill3Steps() {
+        $this->driver->get(DRLevConfig::get('url').'/onboarding?signup=1');
+        sleep(3);
+        $this->closePopup();
+        console("set photo...");
+        $this->clickElement("xpath=//*[@class='photoupload-uploader']|//*[@id='profile_card_add_photo']");
+        $fileInput = $this->driver->findElement($this->getByFromSelector("xpath=//input[@id='okphotos_file_input']"));
+        $fileInput->sendKeys($this->data['photo']);
+        console("OK\n");
+        unlink($this->data['photo']);
+        sleep(2);
+        stepSleep();
+        $this->closePopup();
+        console("set text...");
+        $this->fillElement("xpath=//textarea[@id='profile_textarea']|//textarea[@class='oknf-textarea']", $this->data['text']);
+        stepSleep();
+        $this->clickElement("xpath=//button/descendant-or-self::*[contains(text(), 'Done')]");
+        stepSleep();
+        console("OK\n");
+        sleep(2);
+        $this->closePopup();
+        console("answer questions...\n");
+        while (true) {
+            $rand = rand(1, 2);
+            $selector = "xpath=//div[@id='answer_buttons']/button[{$rand}]|//div[@class='obquestions-buttons']/button[{$rand}]";
+            if ($this->isElementPresent($selector)) {
+                $this->clickElement($selector);
+                console(($rand == 1 ? "'No'" : "'Yes'")." ");
+                sleep(2);
+            } else {
+                break;
+            }
+        }
+        console("OK\n");
+        sleep(2);
+        stepSleep();
+        console("3 likes...");
+        $this->driver->executeScript("jQuery('div.oblikes-match:lt(3)').find('button').click(); jQuery('div.user_card:lt(3)').find('a.rate_btn.flatbutton.silver').click()");
+        console("OK\n");
+        sleep(2);
     }
 
     protected function getCountry() {

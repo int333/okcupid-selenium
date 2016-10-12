@@ -12,13 +12,13 @@ class DRLevTempMail extends DRLevScript {
         if (empty($this->data['email'])) {
             throw new Exception("Email is empty");
         }
+        $md5 = md5($this->data['email']);
+        console("try get email http://api.temp-mail.ru/request/mail/id/{$md5}/format/json");
 
         while ($this->iterationNo++ < $this->iterationCount) {
-            $md5 = md5($this->data['email']);
             try {
-                console("try get email http://api.temp-mail.ru/request/mail/id/{$md5}/format/json ..");
+                console('.');
                 $data = json_decode(file_get_contents("http://api.temp-mail.ru/request/mail/id/{$md5}/format/json"), true);
-                console("OK\n");
             } catch (Exception $e) {
                 console("NOT READY\n");
                 usleep($this->iterationWait * 1000000);
@@ -43,6 +43,7 @@ class DRLevTempMail extends DRLevScript {
                     $approveUrl = substr($approveUrl, 6);
                 }
                 $this->data['approve-url'] = $approveUrl;
+                console("OK\n");
                 console("approve url - {$approveUrl}\n");
                 break;
             }

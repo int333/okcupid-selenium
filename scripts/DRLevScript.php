@@ -53,6 +53,9 @@ abstract class DRLevScript {
                 } catch (NoSuchElementException $e) {
                     $err = $e;
                     continue;
+                } catch (TimeOutException $e) {
+                    $err = $e;
+                    continue;
                 }
             }
             if ($err && $throw) {
@@ -61,8 +64,6 @@ abstract class DRLevScript {
                 } else {
                     return false;
                 }
-            } else {
-                return;
             }
         }
         $by = $this->getByFromSelector($selector);
@@ -74,6 +75,8 @@ abstract class DRLevScript {
                 $done = true;
                 break;
             } catch (NoSuchElementException $e) {
+                $lastErr = $e;
+            } catch (TimeOutException $e) {
                 $lastErr = $e;
             }
 
@@ -95,7 +98,17 @@ abstract class DRLevScript {
      * @return bool
      */
     protected function fillElement($selector, $value, $checkError = false) {
-        $this->clickElement($selector);
+        if (is_array($selector)) {
+            foreach ($selector as $item) {
+                if ($this->fillElement($item, $value, $checkError)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if ($this->clickElement($selector, 1, false) === false) {
+            return false;
+        }
         $by = $this->getByFromSelector($selector);
         $this->driver->findElement($by)->clear();
         $this->driver->getKeyboard()->sendKeys($value);
@@ -131,10 +144,14 @@ abstract class DRLevScript {
     public function isElementPresent($selector) {
         $by = $this->getByFromSelector($selector);
         try {
-            $this->driver->findElement($by);
-            return true;
+            $element = $this->driver->findElement($by);
+            return $element->isDisplayed();
         } catch (NoSuchElementException $e) {
             return false;
         }
+    }
+
+    public function closePopup() {
+        $this->driver->executeScript("jQuery('#windowshade').find('span.icon.i-close').click();");
     }
 } 
