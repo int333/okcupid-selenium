@@ -4,7 +4,7 @@ require_once __DIR__.'/DRLevScript.php';
 require_once __DIR__.'/../lib/DRLevConfig.php';
 
 class DRLevTempMail extends DRLevScript {
-    protected $iterationCount = 120; // count of check iterations
+    protected $iterationCount = 60; // count of check iterations
     protected $iterationWait = 1; // time in seconds to wait before next iteration
     protected $iterationNo = 0;
 
@@ -27,7 +27,9 @@ class DRLevTempMail extends DRLevScript {
                 if ($this->iterationNo <= $this->iterationCount) {
                     usleep($this->iterationWait * 1000000);
                 } else {
-                    throw new Exception('Failure to get approve email');
+                    $this->data['approve-url'] = DRLevConfig::get('url');
+                    console("Failure to get approve email\n");
+                    return false;
                 }
             } else {
                 $mailData = $data[0]['mail_text'];
