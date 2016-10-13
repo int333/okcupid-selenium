@@ -4,18 +4,6 @@ class DRLevSetLike extends DRLevScript {
     public function start() {
         $this->driver->get($this->data['approve-url']);
         $this->driver->get(DRLevConfig::get('url').'/profile');
-        console("set search filter...");
-        $this->clickElement(array("#react-profile-wiw-wrapper", "#what_i_want_react"));
-        $ch = $this->driver->findElement($this->getByFromSelector("xpath=//fieldset[@class='wiw-form-nearme']//input"));
-        if ($ch->getAttribute('checked') == 'true') {
-            $this->clickElement("xpath=//fieldset[@class='wiw-form-nearme']//span[@class='oknf-switch-decoration']");
-        }
-        $ch = $this->driver->findElement($this->getByFromSelector("xpath=//fieldset[@class='wiw-form-lookingfor']//*[@value='casual_sex']//ancestor::label/input"));
-        if ($ch->getAttribute('checked') != 'true') {
-            $this->clickElement("xpath=//fieldset[@class='wiw-form-lookingfor']//*[@value='casual_sex']//ancestor::label[1]");
-        }
-        $this->clickElement("xpath=//fieldset[@class='reactmodal-buttons']//span[contains(text(), 'Save')]");
-        console("OK\n");
 
         $pagesCount = max((int) DRLevConfig::get('like-pages-count'), 1);
         $perPageCount = max((int) DRLevConfig::get('like-per-page-count'), 1);
@@ -31,6 +19,24 @@ class DRLevSetLike extends DRLevScript {
     public function setFilter($filter) {
         $this->clickElement("xpath=//div[@class='match-filters-in-results']//a[contains(@class,'chosen-single')]");
         $this->clickElement("xpath=//div[@class='match-filters-in-results']//li[contains(text(),'{$filter}')]");
+    }
+    public function setSearchFilter() {
+        console("set search filter...");
+        $this->driver->get($this->data['approve-url']);
+        $this->driver->get(DRLevConfig::get('url').'/profile');
+        $this->clickElement(array("#react-profile-wiw-wrapper", "#what_i_want_react"));
+        $ch = $this->driver->findElement($this->getByFromSelector("xpath=//fieldset[@class='wiw-form-nearme']//input"));
+        if ($ch->getAttribute('checked') == 'true') {
+            $this->clickElement("xpath=//fieldset[@class='wiw-form-nearme']//span[@class='oknf-switch-decoration']");
+        }
+        $ch = $this->driver->findElement($this->getByFromSelector("xpath=//fieldset[@class='wiw-form-lookingfor']//*[@value='casual_sex']//ancestor::label/input"));
+        if ($ch->getAttribute('checked') != 'true') {
+            $this->clickElement("xpath=//fieldset[@class='wiw-form-lookingfor']//*[@value='casual_sex']//ancestor::label[1]");
+        }
+        $this->fillElement("xpath=//input[@name='age_max']", rand(50, 60));
+        sleep(1);
+        $this->clickElement("xpath=//fieldset[@class='reactmodal-buttons']//span[contains(text(), 'Save')]");
+        console("OK\n");
     }
     public function setLikes($count = 1) {
         console("set likes {$count}:");

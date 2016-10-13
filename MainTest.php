@@ -48,9 +48,9 @@ class MainTest extends DRLevTest {
 //        $script = new DRLevFillProfile($this->driver, $this->data);
 //        $script->start();
 
-//        console("--SET LIKES--\n");
-//        $script = new DRLevSetLike($this->driver, $this->data);
-//        $script->start();
+        console("--SET FILTER--\n");
+        $script = new DRLevSetLike($this->driver, $this->data);
+        $script->setSearchFilter();
 //
 //        $script = new DRLevLogin($this->driver, $this->data);
 //        $script->start();
