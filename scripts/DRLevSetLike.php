@@ -22,7 +22,7 @@ class DRLevSetLike extends DRLevScript {
     }
     public function setSearchFilter() {
         console("set search filter...");
-        $this->driver->get($this->data['approve-url']);
+        //$this->driver->get($this->data['approve-url']);
         $this->driver->get(DRLevConfig::get('url').'/profile');
         $this->clickElement(array("#react-profile-wiw-wrapper", "#what_i_want_react"));
         $ch = $this->driver->findElement($this->getByFromSelector("xpath=//fieldset[@class='wiw-form-nearme']//input"));
