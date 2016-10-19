@@ -12,6 +12,7 @@ class DRLevDataMgr {
     protected $texts = array();
     protected $links = array();
     protected $newNickIndex = 0;
+    protected $newLinkIndex = 0;
     protected static $instance;
     public static function getInstance() {
         if (!self::$instance) {
@@ -90,11 +91,19 @@ class DRLevDataMgr {
     }
 
     public function generateProfileData() {
+        $nick = $this->generateNick();
+        $link = $this->generateLink();
+        if (empty($nick)) {
+            throw new Exception("No more nicks");
+        }
+        if (empty($link)) {
+            throw new Exception("No more links");
+        }
         $data = array(
             'nick' => $this->generateNick(),
             'country' => 'United States',
             'zipcode' => $this->zipCodes[rand(0, count($this->zipCodes) - 1)],
-            'text' => $this->texts[rand(0, count($this->texts) - 1)]."\n".$this->links[rand(0, count($this->links) - 1)],
+            'text' => $this->texts[rand(0, count($this->texts) - 1)]."\n".$this->generateLink(),
             'photo' => $this->photos[rand(0, count($this->photos) - 1)]
         );
 
@@ -105,12 +114,13 @@ class DRLevDataMgr {
         $y = rand(1989, 1997);
         $data['birthday'] = "{$y}.{$m}.{$d}";
 
+        $this->fixDataEncoding($data);
         return $data;
     }
 
     public function generateNick() {
         if ($this->newNickIndex >= count($this->nicks)) {
-            throw new Exception('No more free nicks');
+            return '';
         }
         $nick = $this->nicks[$this->newNickIndex++];
         if ($nick[0] == '#') {
@@ -131,11 +141,47 @@ class DRLevDataMgr {
         return $nick;
     }
 
+    public function generateLink() {
+        if ($this->newLinkIndex >= count($this->links)) {
+            return '';
+        }
+        $link = $this->links[$this->newLinkIndex++];
+        if ($link[0] == '#') {
+            return $this->generateLink();
+        }
+        $linksFile = DRLevConfig::get('profile-link');
+        $data = '';
+        foreach($this->links as $i => $row) {
+            if ($i > 0) {
+                $data.= "\n";
+            }
+            if ($i < $this->newLinkIndex && $row[0] != '#') {
+                $data.='#';
+            }
+            $data.= $row;
+        }
+        file_put_contents($linksFile, $data);
+        return $link;
+    }
+
     public function setResult($data, $errorMessage = '') {
         $string = "{$data['nick']}|{$data['password']}|{$data['email']}\n";
         file_put_contents(DRLevConfig::get('profile-result'), $string, FILE_APPEND);
         if ($errorMessage) {
             file_put_contents('./log/error.txt', $errorMessage, FILE_APPEND);
+        }
+    }
+
+    private function fixDataEncoding(&$data) {
+        foreach ($data as $key => $value) {
+            if (is_string($value)) {
+                try {
+                    $value = str_replace(chr(195), '', utf8_encode($value));
+                    $data[$key] = $value;
+                } catch (Exception $e) {
+                    continue;
+                }
+            }
         }
     }
 }
