@@ -4,7 +4,7 @@ require_once __DIR__.'/DRLevScript.php';
 require_once __DIR__.'/../lib/DRLevConfig.php';
 
 class DRLevTempMail extends DRLevScript {
-    protected $iterationCount = 60; // count of check iterations
+    protected $iterationCount = 5; // count of check iterations
     protected $iterationWait = 1; // time in seconds to wait before next iteration
     protected $iterationNo = 0;
 

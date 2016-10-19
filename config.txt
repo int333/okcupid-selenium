@@ -1,3 +1,4 @@
+a=этот файл не менять!!!!
 url=https://www.okcupid.com
 rucaptcha-api-key=5594ae49f2f8d33f8df5ae210d258012
 email-domain=@polyfaust.com|@cartelera.org|@hostcalls.com
