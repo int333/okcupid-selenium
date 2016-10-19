@@ -100,10 +100,10 @@ class DRLevDataMgr {
             throw new Exception("No more links");
         }
         $data = array(
-            'nick' => $this->generateNick(),
+            'nick' => $nick,
             'country' => 'United States',
             'zipcode' => $this->zipCodes[rand(0, count($this->zipCodes) - 1)],
-            'text' => $this->texts[rand(0, count($this->texts) - 1)]."\n".$this->generateLink(),
+            'text' => $this->texts[rand(0, count($this->texts) - 1)]."\n".$link,
             'photo' => $this->photos[rand(0, count($this->photos) - 1)]
         );
 
