@@ -114,7 +114,7 @@ class DRLevDataMgr {
         $y = rand(1989, 1997);
         $data['birthday'] = "{$y}.{$m}.{$d}";
 
-        $this->fixDataEncoding($data);
+//        $this->fixDataEncoding($data);
         return $data;
     }
 
