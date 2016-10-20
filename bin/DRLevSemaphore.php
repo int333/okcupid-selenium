@@ -1,30 +1,21 @@
 <?php
 class DRLevSemaphore {
     private static $fileName = '/semaphore.lock';
-    private static function _readFileData($unlock = true) {
+    private static function _readFileData() {
         if (file_exists(__DIR__.'/'.self::$fileName)) {
-            $size = filesize(__DIR__.'/'.self::$fileName);
-            $file = fopen(__DIR__.'/'.self::$fileName, 'r');
-            flock($file, LOCK_SH);
-            $data = fread($file, $size);
-            if ($unlock) {
-                flock($file, LOCK_UN);
-            }
-            fclose($file);
+            $data = file_get_contents(__DIR__.'/'.self::$fileName);
             $data = unserialize($data);
             return $data;
         } else {
             return null;
         }
     }
-    private static function _writeFileData($data = array(), $unlock = true) {
+    private static function _writeFileData($data = array()) {
         $file = fopen(__DIR__.'/'.self::$fileName, 'c+');
         flock($file, LOCK_EX);
         $data = serialize($data);
         fwrite($file, $data);
-        if ($unlock) {
-            flock($file, LOCK_UN);
-        }
+        flock($file, LOCK_UN);
         fclose($file);
     }
     public static function read($varName, $defValue = null) {
@@ -36,7 +27,7 @@ class DRLevSemaphore {
         }
     }
     public static function write($varName, $varValue) {
-        $data = self::_readFileData(false);
+        $data = self::_readFileData();
         if (!$data) {
             $data = array($varName => $varValue);
         } else {
