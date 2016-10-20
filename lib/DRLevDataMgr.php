@@ -61,6 +61,9 @@ class DRLevDataMgr {
                     $oneText.= $text;
                 }
             }
+            if (!empty($oneText)) {
+                $this->texts[] = $oneText;
+            }
         }
         $links = DRLevConfig::get('profile-link');
         if (file_exists($links)) {
@@ -93,17 +96,21 @@ class DRLevDataMgr {
     public function generateProfileData() {
         $nick = $this->generateNick();
         $link = $this->generateLink();
+        $text = $this->generateText();
         if (empty($nick)) {
             throw new Exception("No more nicks");
         }
         if (empty($link)) {
             throw new Exception("No more links");
         }
+        if (empty($text)) {
+            throw new Exception("No more texts");
+        }
         $data = array(
             'nick' => $nick,
             'country' => 'United States',
             'zipcode' => $this->zipCodes[rand(0, count($this->zipCodes) - 1)],
-            'text' => $this->texts[rand(0, count($this->texts) - 1)]."\n".$link,
+            'text' => $text."\n".$link,
             'photo' => $this->photos[rand(0, count($this->photos) - 1)]
         );
 
@@ -162,6 +169,17 @@ class DRLevDataMgr {
         }
         file_put_contents($linksFile, $data);
         return $link;
+    }
+
+    public function generateText() {
+        if (count($this->texts) > 0) {
+            $textsFile = DRLevConfig::get('profile-text');
+            $text = array_shift($this->texts);
+            file_put_contents($textsFile, implode("\r\n\r\n", $this->texts));
+            return $text;
+        } else {
+            return '';
+        }
     }
 
     public function setResult($data, $errorMessage = '') {
