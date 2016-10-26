@@ -1,6 +1,9 @@
 <?php
 class DRLevSemaphore {
-    private static $fileName = '/semaphore.lock';
+    private static $fileName = '/semaphore.data';
+    private static $lockFileName = '/semaphore.lock';
+
+    private static $timeout = 30; // wait for unlock timeout in seconds
     private static function _readFileData() {
         if (file_exists(__DIR__.'/'.self::$fileName)) {
             $data = file_get_contents(__DIR__.'/'.self::$fileName);
@@ -35,5 +38,19 @@ class DRLevSemaphore {
         }
         self::_writeFileData($data);
         return true;
+    }
+    private static function lock() {
+        $maxCnt = self::$timeout * 4;
+        $cnt = 0;
+        while (self::isLocked()) {
+            $cnt++;
+            if ($cnt > $maxCnt) {
+                throw new Exception("wait lock timeout. semaphore is locked");
+            }
+            usleep(250000);
+        }
+    }
+    private static function isLocked() {
+        return !file_exists(__DIR__.'/'.self::$lockFileName) || (int) file_get_contents(__DIR__.'/'.self::$lockFileName) == 1;
     }
 }

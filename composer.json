@@ -3,6 +3,7 @@
         "phpunit/phpunit": "3.7.*"
     },
     "require": {
-        "facebook/webdriver": "dev-master"
+        "facebook/webdriver": "dev-master",
+        "twbs/bootstrap": "^3.3"
     }
 }
