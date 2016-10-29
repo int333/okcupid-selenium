@@ -52,7 +52,8 @@ class DRLevRegistration extends DRLevScript {
     }
 
     protected function fill3Steps() {
-        $this->driver->get(DRLevConfig::get('url').'/onboarding?signup=1');
+		console($this->driver->getCurrentUrl()."\n");
+//        $this->driver->get(DRLevConfig::get('url').'/onboarding?signup=1');
         sleep(3);
         $this->closePopup();
         console("set photo...");

@@ -12,7 +12,7 @@ class DRLevRuCaptcha extends DRLevScript {
 
         console("request captcha result");
         $captchaResponse = json_decode(file_get_contents("http://rucaptcha.com/in.php?key={$apiKey}&method=userrecaptcha&googlekey={$googlekey}&pageurl={$url}&json=1"), true);
-        var_dump($captchaResponse);
+        //var_dump($captchaResponse);
 
         if ($captchaResponse['status'] == 1) {
             $captchaId = $captchaResponse['request'];
@@ -21,9 +21,9 @@ class DRLevRuCaptcha extends DRLevScript {
         }
 
         $captchaResult = '';
-        for($i = 0; $i < 60; $i++) {
+        for($i = 0; $i < 120; $i++) {
             $captchaResponse = json_decode(file_get_contents("http://rucaptcha.com/res.php?key={$apiKey}&action=get&id={$captchaId}&json=1"), true);
-            var_dump($captchaResponse);
+            //var_dump($captchaResponse);
             if ($captchaResponse['status'] == 1) {
                 $captchaResult = $captchaResponse['request'];
                 console("done\n");
