@@ -2,14 +2,14 @@
 
 class DRLevConfig {
     protected static $config = array();
-    public static function get($key) {
+    public static function get($key, $default = null) {
         if (empty(self::$config)) {
             self::load();
         }
         if (array_key_exists($key, self::$config)) {
             return self::$config[$key];
         } else {
-            return null;
+            return $default;
         }
     }
 

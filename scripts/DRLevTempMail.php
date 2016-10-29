@@ -9,6 +9,10 @@ class DRLevTempMail extends DRLevScript {
     protected $iterationNo = 0;
 
     public function start() {
+		if (!DRLevConfig::get('check-email', false)) {
+			console("check email skipped\n");
+			return false;
+		}
         if (empty($this->data['email'])) {
             throw new Exception("Email is empty");
         }
