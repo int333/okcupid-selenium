@@ -111,7 +111,7 @@ class DRLevDataMgr {
             'country' => 'United States',
             'zipcode' => $this->zipCodes[rand(0, count($this->zipCodes) - 1)],
             'text' => $text."\n".$link,
-            'photo' => $this->photos[rand(0, count($this->photos) - 1)]
+            'photo' => $this->generatePhoto()
         );
 
         $data['password'] = $data['nick'].'1';
@@ -124,6 +124,16 @@ class DRLevDataMgr {
 //        $this->fixDataEncoding($data);
         return $data;
     }
+	
+	public function generatePhoto() {
+		if (count($this->photos) == 0) {
+			throw new Exception('Photos does not exists');
+		}
+		$index = rand(0, count($this->photos) - 1);
+		$photo = $this->photos[$index];
+		array_splice($this->photos, $index, 1);
+		return $photo;
+	}
 
     public function generateNick() {
         if ($this->newNickIndex >= count($this->nicks)) {

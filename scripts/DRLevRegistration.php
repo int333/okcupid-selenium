@@ -52,22 +52,30 @@ class DRLevRegistration extends DRLevScript {
         $this->fillElement('#password_input', $login.'1');
     }
 
-    protected function fill3Steps() {
-		console($this->driver->getCurrentUrl()."\n");
-//        $this->driver->get(DRLevConfig::get('url').'/onboarding?signup=1');
+    protected function fill3Steps($fullStart = true) {
         sleep(3);
         $this->closePopup();
         console("set photo...");
-        $this->clickElement("xpath=//*[@class='photoupload-uploader']|//*[@id='profile_card_add_photo']");
+		if ($fullStart) {
+			$this->clickElement("xpath=//*[@class='photoupload-uploader']|//*[@id='profile_card_add_photo']");
+		}
         $fileInput = $this->driver->findElement($this->getByFromSelector("xpath=//input[@id='okphotos_file_input']"));
         $fileInput->sendKeys($this->data['photo']);
+		if ($this->isElementPresent("xpath=//div[@id='okphotos_upload']")) {
+			unlink($this->data['photo']);
+			$this->data['photo'] = DRLevDataMgr::getInstance()->generatePhoto();
+			console("FAIL\ntry again {$this->data['photo']}\n");
+			return $this->fill3Steps(false);
+		}
         console("OK\n");
         unlink($this->data['photo']);
         sleep(2);
         stepSleep();
         $this->closePopup();
         console("set text...");
+
         $this->fillElement("xpath=//textarea[@id='profile_textarea']|//textarea[@class='oknf-textarea']", $this->data['text']);
+        stepSleep();
         stepSleep();
         $this->clickElement("xpath=//button/descendant-or-self::*[contains(text(), 'Done')]");
         stepSleep();
