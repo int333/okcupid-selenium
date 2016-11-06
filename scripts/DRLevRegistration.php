@@ -7,7 +7,7 @@ require_once __DIR__ . '/DRLevTempMail.php';
 class DRLevRegistration extends DRLevScript {
 
     public function start() {
-	$this->selectItem('#gender_dropdownContainer', 'Woman');
+	$this->selectItem('#gender_dropdownContainer', 'Man');
         $this->clickElement('.next_page');
         stepSleep();
         $this->fillForm();
