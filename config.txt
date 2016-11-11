@@ -13,3 +13,5 @@ profile-photos=/home/drlev/myprojects/okcupid-data/photos/
 profile-result=/home/drlev/myprojects/okcupid-data/Результаты.txt
 like-pages-count=10
 like-per-page-count=10
+gender=Woman
+set-3-likes=1
