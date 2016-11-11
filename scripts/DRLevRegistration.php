@@ -7,7 +7,8 @@ require_once __DIR__ . '/DRLevTempMail.php';
 class DRLevRegistration extends DRLevScript {
 
     public function start() {
-	$this->selectItem('#gender_dropdownContainer', 'Man');
+	$gender = DRLevConfig::get('gender', 'Woman');
+	$this->selectItem('#gender_dropdownContainer', $gender);
         $this->clickElement('.next_page');
         stepSleep();
         $this->fillForm();
@@ -98,9 +99,13 @@ class DRLevRegistration extends DRLevScript {
         sleep(2);
         stepSleep();
         console("3 likes...");
-        $this->driver->executeScript("jQuery('div.oblikes-match:lt(3)').find('button').click(); jQuery('div.user_card:lt(3)').find('a.rate_btn.flatbutton.silver').each(function(i, e){var el = e, clickFn = function(){el.click()}; setTimeout(clickFn, 1000 * i)});");
-        console("OK\n");
-        sleep(2);
+	if (DRLevConfig::get('set-3-likes', 1) == 0) {
+	    console("SKIPPED\n");
+	} else {
+	    $this->driver->executeScript("jQuery('div.oblikes-match:lt(3)').find('button').click(); jQuery('div.user_card:lt(3)').find('a.rate_btn.flatbutton.silver').each(function(i, e){var el = e, clickFn = function(){el.click()}; setTimeout(clickFn, 1000 * i)});");
+            console("OK\n");
+            sleep(2);
+	}	
     }
 
     protected function getCountry() {
