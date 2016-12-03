@@ -98,14 +98,18 @@ class DRLevRegistration extends DRLevScript {
         console("OK\n");
         sleep(2);
         stepSleep();
+        console('');
+        if ($this->clickElement("xpath=//input[@value='casual_sex']", 5, false)) {
+            $this->clickElement("xpath=//button/descendant-or-self::*[contains(text(), 'Continue')]");
+        }
         console("3 likes...");
-	if (DRLevConfig::get('set-3-likes', 1) == 0) {
-	    console("SKIPPED\n");
-	} else {
-	    $this->driver->executeScript("jQuery('div.oblikes-match:lt(3)').find('button').click(); jQuery('div.user_card:lt(3)').find('a.rate_btn.flatbutton.silver').each(function(i, e){var el = e, clickFn = function(){el.click()}; setTimeout(clickFn, 1000 * i)});");
-            console("OK\n");
-            sleep(2);
-	}	
+        if (DRLevConfig::get('set-3-likes', 1) == 0) {
+            console("SKIPPED\n");
+        } else {
+            $this->driver->executeScript("jQuery('div.oblikes-match:lt(3)').find('button').click(); jQuery('div.user_card:lt(3)').find('a.rate_btn.flatbutton.silver').each(function(i, e){var el = e, clickFn = function(){el.click()}; setTimeout(clickFn, 1000 * i)});");
+                console("OK\n");
+                sleep(2);
+        }
     }
 
     protected function getCountry() {
