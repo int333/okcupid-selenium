@@ -101,6 +101,7 @@ class DRLevRegistration extends DRLevScript {
         console('');
         if ($this->clickElement("xpath=//input[@value='casual_sex']", 5, false)) {
             $this->clickElement("xpath=//button/descendant-or-self::*[contains(text(), 'Continue')]");
+            sleep(2);
         }
         console("3 likes...");
         if (DRLevConfig::get('set-3-likes', 1) == 0) {
